@@ -12,7 +12,7 @@ export class ProductListComponent implements OnInit {
   items: Product[] = [];
 
   constructor(private http: HttpClient) {
-    this.http.get('https://fakestoreapi.com/products').subscribe((response) => {
+    this.http.get('https://fakestoreapi.com/products').subscribe((response : Product[]) => {
       for (let item of response) {
         this.items.push({
           image: item.image,
