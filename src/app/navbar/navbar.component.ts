@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from '../material-module/material-module.module'
 @Component({
   selector: 'app-navbar',
@@ -7,9 +8,24 @@ import { MaterialModule } from '../material-module/material-module.module'
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(public dialog: MatDialog) { }
+  openLoginDialog = function () {
+    const dialogRef = this.dialog.open(DialogContentExampleDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+    console.log('The Login dialog is opened');
+  };
+  openSignUpDialog = function () {
+    console.log('The Sign Up dialog is opened');
+  };
   ngOnInit(): void {
-  }
+  };
 
 }
+
+@Component({
+  selector: 'app-dialog-content-example-dialog',
+  templateUrl: 'dialog-content-example-dialog.html',
+})
+export class DialogContentExampleDialogComponent {}
