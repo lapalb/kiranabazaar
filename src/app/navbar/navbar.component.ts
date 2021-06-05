@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Injectable, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -32,12 +32,23 @@ export class NavbarComponent implements OnInit {
   logout = () => {
     alert('You are being logged out');
   }
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private sharedService: SharedService) {
+    this.sharedService.onHide$.subscribe((data) => {
+      this.user = data;
+      this.isLoggedIn = true;
+    });
+  }
 
   ngOnInit(): void {
     // Init Function
   }
 
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class SharedService{
+  public onHide$ = new EventEmitter<string>();
 }
 
 @Component({
@@ -52,13 +63,14 @@ export class DialogContentExampleDialogComponent {
     firebase.auth()
     .signInWithPopup(provider)
       .then((result) => {
+        this.sharedService.onHide$.emit(result.user.displayName);
         console.log(result.user);
     }).catch((error) => {
       // ...
   });
   }
 
-  constructor(private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer) {
+  constructor(private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer, private sharedService: SharedService) {
     this.matIconRegistry.addSvgIcon('logo', this.domSanitizer.bypassSecurityTrustResourceUrl(this.googleLogoURL));
   }
 }
