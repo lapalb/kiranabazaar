@@ -1,6 +1,16 @@
 <mat-toolbar>
   Kirana Bazaar
   <span class="example-spacer"></span>
-  <button mat-raised-button color="accent" (click)="openSignUpDialog()">Sign Up </button>
+
+  <div *ngIf="isLoggedIn">
+    <button mat-raised-button color="accent">Hi {{user}}</button>
+     <button mat-raised-button color="accent" (click)="logout()">Logout</button>
+   </div>
+
+  <div *ngIf="!isLoggedIn">
+    <button mat-raised-button color="accent" (click)="openSignUpDialog()">Sign Up </button>
   <button mat-raised-button color="accent" (click)="openLoginDialog()">Login</button>
+  </div>
+
+
 </mat-toolbar>

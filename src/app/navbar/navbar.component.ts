@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MaterialModule } from '../material-module/material-module.module'
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -8,19 +7,27 @@ import { MaterialModule } from '../material-module/material-module.module'
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
-  openLoginDialog = function () {
+  isLoggedIn = false;
+  user = 'Akanksha';
+
+  openLoginDialog = () => {
     const dialogRef = this.dialog.open(DialogContentExampleDialogComponent);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
     console.log('The Login dialog is opened');
-  };
-  openSignUpDialog = function () {
+  }
+  openSignUpDialog =  () => {
     console.log('The Sign Up dialog is opened');
-  };
+  }
+  logout = () => {
+    alert('You are being logged out');
+  }
+  constructor(public dialog: MatDialog) { }
+
   ngOnInit(): void {
-  };
+    // Init Function
+  }
 
 }
 
