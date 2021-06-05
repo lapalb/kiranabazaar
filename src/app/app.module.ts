@@ -7,9 +7,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MaterialModule } from './material-module/material-module.module';
+import { ProductListComponent } from './product-list/product-list.component';
 @NgModule({
   declarations: [
     AppComponent,
+    ProductListComponent,
   ],
   imports: [
     BrowserModule,
