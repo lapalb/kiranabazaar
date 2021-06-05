@@ -1,9 +1,13 @@
 <h2 mat-dialog-title>Login to Kirana Bazaar</h2>
+
 <mat-dialog-content class="mat-typography">
  <h3>Please choose one of the below login Method</h3>
  <div style="display:flex; flex-flow: row wrap; justify-content:center">
-  <button mat-raised-button color="accent" style="margin-right:20px">Gmail</button>
-  <button mat-raised-button color="accent">Facebook</button>
+
+  <button mat-raised-button style="padding: 1rem;" style="margin-right:20px" (click)="loginGmail()">
+    <mat-icon style="width: 50px; height:30px"
+              svgIcon="logo"></mat-icon> Login With Google
+ </button>
  </div>
 
 </mat-dialog-content>
