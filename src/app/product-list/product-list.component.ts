@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Product } from './product';
 
 @Component({
   selector: 'app-product-list',
@@ -7,14 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductListComponent implements OnInit {
 
-  items = [];
+  items: Product[] = [];
 
-  constructor() {
-    this.items[0] = {
-      imageURL: 'https://lapalb.github.io/img/ash.jpg',
-      heading: 'Apple',
-      content: 'This is Apple'
-    };
+  constructor(private http: HttpClient) {
+    this.http.get('https://fakestoreapi.com/products').subscribe((response) => {
+      for (let item of response) {
+        this.items.push({
+          image: item.image,
+          title: item.title,
+          price: item.price,
+          description: item.description
+        });
+      }
+    });
+
    }
 
   ngOnInit(): void {
