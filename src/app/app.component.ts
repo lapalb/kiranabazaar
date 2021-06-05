@@ -14,6 +14,9 @@ export class AppComponent {
     });
     console.log('The Login dialog is opened');
   };
+  openSignUpDialog = function () {
+    console.log('The Sign Up dialog is opened');
+  }
   constructor(public dialog: MatDialog) {}
 }
 @Component({
