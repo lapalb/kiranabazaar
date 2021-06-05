@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "kart-13126": {
+      "hosting": {
+        "kiranabazaar": [
+          "kart-13126"
+        ]
+      }
+    }
+  }
+}

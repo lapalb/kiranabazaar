@@ -125,6 +125,10 @@
               "devServerTarget": "kiranabazaar:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
