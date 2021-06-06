@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Injectable, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import firebase from 'firebase/app';
@@ -14,9 +14,12 @@ import 'firebase/firestore';
 })
 export class NavbarComponent implements OnInit {
 
-  isLoggedIn = false;
-  user = 'Akanksha';
-
+  isLoggedIn;
+  user="lol";
+  clearNavBar = () => {
+    this.isLoggedIn = false;
+    this.user = '';
+  };
   openLoginDialog = () => {
     const dialogRef = this.dialog.open(DialogContentExampleDialogComponent,{
       height: '250px',
@@ -30,17 +33,25 @@ export class NavbarComponent implements OnInit {
     console.log('The Sign Up dialog is opened');
   }
   logout = () => {
-    alert('You are being logged out');
+    firebase.auth().signOut();
+    this.clearNavBar();
   }
   constructor(public dialog: MatDialog, private sharedService: SharedService) {
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        sharedService.onHide$.emit(user.displayName);
+      } else {
+        // No user is signed in.
+      }
+    });
     this.sharedService.onHide$.subscribe((data) => {
       this.user = data;
       this.isLoggedIn = true;
-    });
+    })
   }
 
   ngOnInit(): void {
-    // Init Function
+
   }
 
 }
@@ -58,19 +69,24 @@ export class SharedService{
 })
 export class DialogContentExampleDialogComponent {
    googleLogoURL = 'https://raw.githubusercontent.com/fireflysemantics/logo/master/Google.svg';
-  loginGmail =  () => {
-    let provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth()
-    .signInWithPopup(provider)
-      .then((result) => {
-        this.sharedService.onHide$.emit(result.user.displayName);
-        console.log(result.user);
-    }).catch((error) => {
-      // ...
-  });
+  loginGmail = () => {
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth()
+      .signInWithPopup(provider)
+        .then((result) => {debugger
+          this.sharedService.onHide$.emit(result.user.displayName);
+          console.log(result.user);
+          this.dialogRef.close();
+      }).catch((error) => {
+        // ...
+    });
+    })
   }
 
-  constructor(private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer, private sharedService: SharedService) {
+
+  constructor(private matIconRegistry: MatIconRegistry,private domSanitizer: DomSanitizer, private sharedService: SharedService,  public dialogRef: MatDialogRef<DialogContentExampleDialogComponent>) {
     this.matIconRegistry.addSvgIcon('logo', this.domSanitizer.bypassSecurityTrustResourceUrl(this.googleLogoURL));
+
   }
 }
